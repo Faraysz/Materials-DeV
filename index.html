@@ -1,1033 +1,548 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="claude:viewport-fit-sides" content="cover">
-<title>Toko Bangunan Sejahtera</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@600;700;800&family=Inter:wght@400;500;600&display=swap">
-<style>
-/* Hallmark · macrostructure: Split Hero + Product Grid · theme: Industrial (custom) · genre: utilitarian */
-
-:root {
-  /* Layout: industrial grid with bold sections, floating chat widget */
-
-  /* Colors - concrete, steel, safety orange (OKLCH for perceptual uniformity) */
-  --concrete: oklch(30% 0.01 250);
-  --steel: oklch(45% 0.01 250);
-  --cement-light: oklch(92% 0.005 250);
-  --surface: oklch(100% 0 0);
-  --accent: oklch(62% 0.19 35);
-  --accent-hover: oklch(57% 0.19 32);
-  --text-primary: oklch(15% 0.01 250);
-  --text-secondary: oklch(45% 0.01 250);
-
-  /* Interaction states */
-  --focus-ring: oklch(62% 0.19 35);
-  --shadow-sm: oklch(20% 0 0 / 0.08);
-  --shadow-md: oklch(20% 0 0 / 0.12);
-  --shadow-lg: oklch(20% 0 0 / 0.2);
-  --glass-tint: oklch(100% 0 0 / 0.1);
-  --glass-border: oklch(100% 0 0 / 0.2);
-
-  /* Typography */
-  --font-display: 'Work Sans', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
-
-  color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --concrete: oklch(22% 0.01 250);
-    --steel: oklch(35% 0.01 250);
-    --cement-light: oklch(17% 0.01 250);
-    --surface: oklch(14% 0.01 250);
-    --accent: oklch(67% 0.19 38);
-    --accent-hover: oklch(62% 0.19 35);
-    --text-primary: oklch(92% 0.005 250);
-    --text-secondary: oklch(70% 0.01 250);
-    --shadow-sm: oklch(10% 0 0 / 0.3);
-    --shadow-md: oklch(10% 0 0 / 0.4);
-    --shadow-lg: oklch(10% 0 0 / 0.5);
-    color-scheme: dark;
-  }
-}
-
-:root[data-theme="dark"] {
-  --concrete: oklch(22% 0.01 250);
-  --steel: oklch(35% 0.01 250);
-  --cement-light: oklch(17% 0.01 250);
-  --surface: oklch(14% 0.01 250);
-  --accent: oklch(67% 0.19 38);
-  --accent-hover: oklch(62% 0.19 35);
-  --text-primary: oklch(92% 0.005 250);
-  --text-secondary: oklch(70% 0.01 250);
-  --shadow-sm: oklch(10% 0 0 / 0.3);
-  --shadow-md: oklch(10% 0 0 / 0.4);
-  --shadow-lg: oklch(10% 0 0 / 0.5);
-  color-scheme: dark;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  height: 100%;
-}
-
-body {
-  font-family: var(--font-body);
-  color: var(--text-primary);
-  background: var(--surface);
-  line-height: 1.6;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0 0 auto;
-  height: env(safe-area-inset-top, 0px);
-  z-index: 10;
-  background: var(--concrete);
-}
-
-header {
-  background: var(--concrete);
-  color: var(--cement-light);
-  padding: 1.5rem 2rem;
-  position: sticky;
-  top: env(safe-area-inset-top, 0px);
-  z-index: 100;
-  box-shadow: 0 2px 8px var(--shadow-sm);
-}
-
-.header-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 2rem;
-}
-
-.logo {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.logo span {
-  color: var(--accent);
-}
-
-nav {
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-}
-
-nav a {
-  color: var(--cement-light);
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 0.95rem;
-  transition: color 0.2s;
-  position: relative;
-}
-
-nav a:hover {
-  color: var(--accent);
-}
-
-nav a:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 4px;
-  border-radius: 2px;
-}
-
-nav a[aria-current="page"]::after {
-  content: "";
-  position: absolute;
-  bottom: -0.5rem;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--accent);
-}
-
-.hero {
-  background: linear-gradient(135deg, var(--concrete) 0%, var(--steel) 100%);
-  color: var(--cement-light);
-  padding: 4rem 2rem;
-}
-
-.hero-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: center;
-}
-
-.hero-text h1 {
-  font-family: var(--font-display);
-  font-size: 3rem;
-  font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 1rem;
-  text-wrap: balance;
-}
-
-.hero-text h1 span {
-  color: var(--accent);
-}
-
-.hero-text p {
-  font-size: 1.15rem;
-  line-height: 1.7;
-  margin-bottom: 2rem;
-  color: var(--cement-light);
-  opacity: 0.9;
-}
-
-.cta-button {
-  display: inline-block;
-  background: var(--accent);
-  color: white;
-  padding: 1rem 2rem;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: background 0.2s, transform 0.1s;
-  border: none;
-  cursor: pointer;
-}
-
-.cta-button:hover {
-  background: var(--accent-hover);
-}
-
-.cta-button:focus-visible {
-  outline: 3px solid var(--focus-ring);
-  outline-offset: 3px;
-}
-
-.cta-button:active {
-  transform: translateY(1px);
-}
-
-.cta-button:disabled,
-.cta-button[aria-disabled="true"] {
-  background: var(--steel);
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-.cta-button[data-state="loading"] {
-  background: var(--steel);
-  cursor: wait;
-}
-
-.cta-button[data-state="error"] {
-  background: oklch(50% 0.2 25);
-}
-
-.cta-button[data-state="success"] {
-  background: oklch(55% 0.15 145);
-}
-
-.hero-image {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-
-.hero-product {
-  background: var(--glass-tint);
-  backdrop-filter: blur(10px);
-  padding: 1.5rem;
-  border-radius: 8px;
-  border: 1px solid var(--glass-border);
-}
-
-.hero-product h3 {
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-}
-
-.hero-product p {
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-section {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 4rem 2rem;
-}
-
-h2 {
-  font-family: var(--font-display);
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  text-wrap: balance;
-}
-
-.section-subtitle {
-  color: var(--text-secondary);
-  font-size: 1.1rem;
-  margin-bottom: 3rem;
-  max-width: 60ch;
-}
-
-.products {
-  background: var(--cement-light);
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-}
-
-.product-card:first-child {
-  grid-column: span 2;
-}
-
-@media (max-width: 768px) {
-  .product-card:first-child {
-    grid-column: span 1;
-  }
-}
-
-.product-card {
-  background: var(--surface);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px var(--shadow-sm);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px var(--shadow-md);
-}
-
-.product-card:focus-within {
-  outline: 3px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
-.product-image {
-  width: 100%;
-  height: 200px;
-  background: linear-gradient(135deg, var(--steel) 0%, var(--concrete) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  color: var(--cement-light);
-}
-
-.product-info {
-  padding: 1.5rem;
-}
-
-.product-info h3 {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.product-info p {
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-  margin-bottom: 1rem;
-}
-
-.product-price {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-}
-
-.product-unit {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  font-weight: 400;
-}
-
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
-
-.gallery-item {
-  background: var(--cement-light);
-  border-radius: 8px;
-  overflow: hidden;
-  aspect-ratio: 4/3;
-}
-
-.gallery-image {
-  width: 100%;
-  height: 75%;
-  background: linear-gradient(45deg, var(--steel) 0%, var(--concrete) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
-  color: var(--cement-light);
-}
-
-.gallery-caption {
-  padding: 1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.contact {
-  background: var(--concrete);
-  color: var(--cement-light);
-  text-align: center;
-}
-
-.contact h2 {
-  color: var(--cement-light);
-}
-
-.contact-info {
-  display: flex;
-  justify-content: center;
-  gap: 3rem;
-  margin-top: 2rem;
-  flex-wrap: wrap;
-}
-
-.contact-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.contact-item strong {
-  font-size: 1.1rem;
-}
-
-.chat-widget {
-  position: fixed;
-  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
-  right: calc(24px + env(safe-area-inset-right, 0px));
-  z-index: 1000;
-}
-
-.chat-button {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: var(--accent);
-  color: white;
-  border: none;
-  font-size: 2rem;
-  cursor: pointer;
-  box-shadow: 0 4px 16px oklch(62% 0.19 35 / 0.3);
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.chat-button:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 20px oklch(62% 0.19 35 / 0.4);
-}
-
-.chat-button:focus-visible {
-  outline: 3px solid var(--focus-ring);
-  outline-offset: 3px;
-}
-
-.chat-button:active {
-  transform: scale(1.05);
-}
-
-.chat-window {
-  position: fixed;
-  bottom: calc(100px + env(safe-area-inset-bottom, 0px));
-  right: calc(24px + env(safe-area-inset-right, 0px));
-  width: 360px;
-  max-width: calc(100vw - 48px);
-  height: 500px;
-  max-height: calc(100vh - 140px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
-  background: var(--surface);
-  border-radius: 12px;
-  box-shadow: 0 8px 32px var(--shadow-lg);
-  display: none;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.chat-window.active {
-  display: flex;
-}
-
-.chat-header {
-  background: var(--concrete);
-  color: var(--cement-light);
-  padding: 1rem 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.chat-header h3 {
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.chat-close {
-  background: none;
-  border: none;
-  color: var(--cement-light);
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  transition: background 0.2s;
-}
-
-.chat-close:hover {
-  background: var(--steel);
-}
-
-.chat-close:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.chat-message {
-  max-width: 80%;
-  padding: 0.75rem 1rem;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-.chat-message.bot {
-  background: var(--cement-light);
-  color: var(--text-primary);
-  align-self: flex-start;
-  border-bottom-left-radius: 4px;
-}
-
-.chat-message.user {
-  background: var(--accent);
-  color: white;
-  align-self: flex-end;
-  border-bottom-right-radius: 4px;
-}
-
-.chat-options {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.chat-option {
-  background: var(--surface);
-  border: 2px solid var(--cement-light);
-  color: var(--text-primary);
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.2s;
-  text-align: left;
-}
-
-.chat-option:hover {
-  border-color: var(--accent);
-  background: var(--cement-light);
-}
-
-.chat-option:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
-.chat-input-container {
-  padding: 1rem 1.5rem;
-  border-top: 1px solid var(--cement-light);
-  display: flex;
-  gap: 0.75rem;
-}
-
-.chat-input {
-  flex: 1;
-  padding: 0.75rem 1rem;
-  border: 2px solid var(--cement-light);
-  border-radius: 8px;
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  background: var(--surface);
-  color: var(--text-primary);
-}
-
-.chat-input:focus {
-  outline: none;
-  border-color: var(--accent);
-}
-
-.chat-input:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 1px;
-  border-color: var(--accent);
-}
-
-.chat-send {
-  background: var(--accent);
-  color: white;
-  border: none;
-  padding: 0.75rem 1.25rem;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
-}
-
-.chat-send:hover {
-  background: var(--accent-hover);
-}
-
-.chat-send:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
-.chat-send:active {
-  transform: translateY(1px);
-}
-
-.chat-send:disabled {
-  background: var(--steel);
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-@media (max-width: 768px) {
-  .hero-content {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-text h1 {
-    font-size: 2rem;
-  }
-
-  .hero-image {
-    grid-template-columns: 1fr;
-  }
-
-  h2 {
-    font-size: 2rem;
-  }
-
-  nav {
-    gap: 1rem;
-  }
-
-  nav a {
-    font-size: 0.85rem;
-  }
-
-  nav a[aria-current="page"]::after {
-    bottom: -0.35rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toko Bangunan Sejahtera — Material Berkualitas</title>
+  <meta name="description" content="Toko Bangunan Sejahtera menyediakan semen, besi, pasir, batu bata, dan material konstruksi berkualitas dengan harga terjangkau dan pengiriman cepat.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@600;700;800;900&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-  <div class="header-content">
-    <div class="logo">Toko Bangunan <span>Sejahtera</span></div>
-    <nav>
-      <a href="#produk">Produk</a>
-      <a href="#galeri">Proyek</a>
-      <a href="#kontak">Kontak</a>
-    </nav>
-  </div>
-</header>
-
-<div class="hero">
-  <div class="hero-content">
-    <div class="hero-text">
-      <h1>Material Bangunan <span>Berkualitas</span> untuk Proyek Anda</h1>
-      <p>Menyediakan semen, besi, pasir, batu bata, dan berbagai material konstruksi dengan harga terjangkau. Pengiriman cepat ke seluruh wilayah.</p>
-      <a href="#produk" class="cta-button">Lihat Katalog</a>
-    </div>
-    <div class="hero-image">
-      <div class="hero-product">
-        <h3>🏗️ Semen Tiga Roda</h3>
-        <p>50kg - Rp 65.000</p>
+  <!-- ═══ TOP BAR (navy strip) ═══ -->
+  <div class="top-bar">
+    <div class="top-bar-inner container">
+      <div class="top-bar-promo">
+        <svg class="ui-icon icon-flame" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0a5 5 0 0 1 1-3a1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg>
+        <strong>Promo Akhir Tahun!</strong> &nbsp;Gratis ongkir radius 10km untuk pembelian min. Rp 500.000
       </div>
-      <div class="hero-product">
-        <h3>🔩 Besi Beton</h3>
-        <p>12mm - Rp 185.000/btg</p>
-      </div>
-      <div class="hero-product">
-        <h3>🧱 Bata Merah</h3>
-        <p>Rp 850/pcs</p>
-      </div>
-      <div class="hero-product">
-        <h3>🪨 Pasir Bangka</h3>
-        <p>1m³ - Rp 350.000</p>
+      <div class="top-bar-links">
+        <a href="#kontak">
+          <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233a14 14 0 0 0 6.392 6.384"/></svg>
+          0812-3456-7890
+        </a>
+        <span class="top-bar-dot"></span>
+        <a href="#kontak">
+          <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Senin–Sabtu 07.00–17.00
+        </a>
+        <span class="top-bar-dot"></span>
+        <a href="https://wa.me/6281234567890" target="_blank" rel="noopener">
+          <svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 21l1.65-3.8a9 9 0 1 1 3.4 2.9z"/><path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0za5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"/></svg>
+          WhatsApp
+        </a>
       </div>
     </div>
   </div>
-</div>
 
-<section id="produk" class="products">
-  <h2>Katalog Produk</h2>
-  <p class="section-subtitle">Semen, besi, bata, pasir — semua ada. Harga transparan, kualitas terjamin.</p>
+  <!-- ═══ HEADER ═══ -->
+  <header class="site-header">
+    <div class="header-inner container">
+      <a href="#" class="logo">
+        <span class="logo-icon">S</span>
+        Toko<span class="logo-mark">Sejahtera</span>
+      </a>
 
-  <div class="product-grid">
-    <div class="product-card">
-      <div class="product-image">🏗️</div>
-      <div class="product-info">
-        <h3>Semen Tiga Roda</h3>
-        <p>Portland Composite Cement 50kg, standar SNI</p>
-        <div class="product-price">Rp 65.000<span class="product-unit">/sak</span></div>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg class="ui-icon icon-menu" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      </button>
+
+      <nav>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#produk">Produk</a></li>
+          <li><a href="#proyek">Proyek</a></li>
+          <li><a href="#kontak">Kontak</a></li>
+          <li><a href="#kontak" class="nav-cta">Hubungi Kami</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero">
+    <div class="hero-inner container">
+      <div class="hero-text">
+        <div class="hero-badge">Terpercaya Sejak 2005</div>
+        <h1>Material Bangunan <span class="highlight">Berkualitas</span> untuk Proyek Anda</h1>
+        <p class="hero-desc">Menyediakan semen, besi, pasir, batu bata, dan berbagai material konstruksi dengan harga transparan. Pengiriman cepat ke seluruh wilayah.</p>
+        <div class="hero-actions">
+          <a href="#produk" class="btn-primary">
+            Lihat Katalog
+            <svg class="ui-icon icon-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg>
+          </a>
+          <a href="#kontak" class="btn-secondary">
+            <svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2a9 9 0 0 1 9 9m-9-5a5 5 0 0 1 5 5m-4.168 5.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233a14 14 0 0 0 6.392 6.384"/></svg>
+            Hubungi Kami
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-cards">
+        <div class="hero-card reveal">
+          <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=300&q=70&auto=format&fit=crop" alt="Semen" class="hero-card-img">
+          <h3>Semen Tiga Roda</h3>
+          <span class="price">Rp 65.000 / sak</span>
+        </div>
+        <div class="hero-card reveal">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=70&auto=format&fit=crop" alt="Besi Beton" class="hero-card-img">
+          <h3>Besi Beton 12mm</h3>
+          <span class="price">Rp 185.000 / btg</span>
+        </div>
+        <div class="hero-card reveal">
+          <img src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=300&q=70&auto=format&fit=crop" alt="Bata Merah" class="hero-card-img">
+          <h3>Bata Merah Press</h3>
+          <span class="price">Rp 850 / pcs</span>
+        </div>
+        <div class="hero-card reveal">
+          <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&q=70&auto=format&fit=crop" alt="Pasir" class="hero-card-img">
+          <h3>Pasir Bangka</h3>
+          <span class="price">Rp 350.000 / m³</span>
+        </div>
       </div>
     </div>
+  </section>
 
-    <div class="product-card">
-      <div class="product-image">🔩</div>
-      <div class="product-info">
-        <h3>Besi Beton 12mm</h3>
-        <p>Panjang 12m, ulir full, merk Krakatau Steel</p>
-        <div class="product-price">Rp 185.000<span class="product-unit">/batang</span></div>
+  <!-- ═══ STATS BAR ═══ -->
+  <div class="stats-bar">
+    <div class="stats-inner container">
+      <div class="stat-item reveal">
+        <span class="stat-icon">
+          <svg class="ui-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21h6m-3 0V3L3 9h18M9 3l10 6"/><path d="M17 9v4a2 2 0 1 1-2 2"/></svg>
+        </span>
+        <span class="stat-number">500+</span>
+        <span class="stat-label">Proyek Dilayani</span>
       </div>
-    </div>
-
-    <div class="product-card">
-      <div class="product-image">🧱</div>
-      <div class="product-info">
-        <h3>Bata Merah Press</h3>
-        <p>Ukuran 20x10x5cm, kuat tekan 50kg/cm²</p>
-        <div class="product-price">Rp 850<span class="product-unit">/pcs</span></div>
+      <div class="stat-item reveal">
+        <span class="stat-icon">
+          <svg class="ui-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89l1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
+        </span>
+        <span class="stat-number">18</span>
+        <span class="stat-label">Tahun Pengalaman</span>
       </div>
-    </div>
-
-    <div class="product-card">
-      <div class="product-image">🪨</div>
-      <div class="product-info">
-        <h3>Pasir Bangka</h3>
-        <p>Pasir halus untuk plesteran dan acian</p>
-        <div class="product-price">Rp 350.000<span class="product-unit">/m³</span></div>
+      <div class="stat-item reveal">
+        <span class="stat-icon">
+          <svg class="ui-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.97 12.92A2 2 0 0 0 2 14.63v3.24a2 2 0 0 0 .97 1.71l3 1.8a2 2 0 0 0 2.06 0L12 19v-5.5l-5-3zM7 16.5l-4.74-2.85M7 16.5l5-3m-5 3v5.17m5-8.17V19l3.97 2.38a2 2 0 0 0 2.06 0l3-1.8a2 2 0 0 0 .97-1.71v-3.24a2 2 0 0 0-.97-1.71L17 10.5zm5 3l-5-3m5 3l4.74-2.85M17 16.5v5.17"/><path d="M7.97 4.42A2 2 0 0 0 7 6.13v4.37l5 3l5-3V6.13a2 2 0 0 0-.97-1.71l-3-1.8a2 2 0 0 0-2.06 0zM12 8L7.26 5.15M12 8l4.74-2.85M12 13.5V8"/></svg>
+        </span>
+        <span class="stat-number">50+</span>
+        <span class="stat-label">Jenis Produk</span>
       </div>
-    </div>
-
-    <div class="product-card">
-      <div class="product-image">🪨</div>
-      <div class="product-info">
-        <h3>Batu Split 1/2</h3>
-        <p>Agregat kasar untuk beton cor</p>
-        <div class="product-price">Rp 385.000<span class="product-unit">/m³</span></div>
-      </div>
-    </div>
-
-    <div class="product-card">
-      <div class="product-image">🪵</div>
-      <div class="product-info">
-        <h3>Triplek 9mm</h3>
-        <p>Ukuran 122x244cm, grade A</p>
-        <div class="product-price">Rp 180.000<span class="product-unit">/lembar</span></div>
+      <div class="stat-item reveal">
+        <span class="stat-icon">
+          <svg class="ui-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2m10 0H9m10 0h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+        </span>
+        <span class="stat-number">10km</span>
+        <span class="stat-label">Gratis Pengiriman</span>
       </div>
     </div>
   </div>
-</section>
 
-<section id="galeri">
-  <h2>Proyek Kami</h2>
-  <p class="section-subtitle">Dari rumah tinggal sampai infrastruktur — kami sudah memasok ratusan proyek di Jakarta dan sekitarnya.</p>
-
-  <div class="gallery-grid">
-    <div class="gallery-item">
-      <div class="gallery-image">🏠</div>
-      <div class="gallery-caption">Pembangunan Rumah Tinggal 2 Lantai</div>
-    </div>
-
-    <div class="gallery-item">
-      <div class="gallery-image">🏢</div>
-      <div class="gallery-caption">Renovasi Gedung Perkantoran</div>
-    </div>
-
-    <div class="gallery-item">
-      <div class="gallery-image">🏗️</div>
-      <div class="gallery-caption">Proyek Perumahan 50 Unit</div>
-    </div>
-
-    <div class="gallery-item">
-      <div class="gallery-image">🏪</div>
-      <div class="gallery-caption">Pembangunan Ruko 3 Lantai</div>
-    </div>
-
-    <div class="gallery-item">
-      <div class="gallery-image">🌉</div>
-      <div class="gallery-caption">Proyek Infrastruktur Jalan</div>
-    </div>
-
-    <div class="gallery-item">
-      <div class="gallery-image">⛪</div>
-      <div class="gallery-caption">Renovasi Bangunan Ibadah</div>
-    </div>
-  </div>
-</section>
-
-<section id="kontak" class="contact">
-  <h2>Hubungi Kami</h2>
-  <p class="section-subtitle">Ada pertanyaan? Telepon langsung atau chat dengan kami.</p>
-
-  <div class="contact-info">
-    <div class="contact-item">
-      <strong>📞 Telepon</strong>
-      <span>0812-3456-7890</span>
-    </div>
-    <div class="contact-item">
-      <strong>📍 Alamat</strong>
-      <span>Jl. Raya Industri No. 123, Jakarta</span>
-    </div>
-    <div class="contact-item">
-      <strong>⏰ Jam Operasional</strong>
-      <span>Senin - Sabtu: 07.00 - 17.00</span>
+  <!-- ═══ CATEGORY STRIP ═══ -->
+  <div class="category-strip">
+    <div class="container">
+      <div class="cat-grid">
+        <a href="#produk" class="cat-item">
+          <div class="cat-icon">
+            <svg class="ui-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="6" rx="1"/><path d="M17 14v7M7 14v7M17 3v3M7 3v3m3 8L2.3 6.3M14 6l7.7 7.7M8 6l8 8"/></svg>
+          </div>
+          <span class="cat-name">Semen & Cor</span>
+        </a>
+        <a href="#produk" class="cat-item">
+          <div class="cat-icon">
+            <svg class="ui-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3v7h6l-8 11v-7H5z"/></svg>
+          </div>
+          <span class="cat-name">Besi & Baja</span>
+        </a>
+        <a href="#produk" class="cat-item">
+          <div class="cat-icon">
+            <svg class="ui-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm0 2h16m0 4H4m0 4h16M9 4v4m5 0v4m-6 0v4m8-4v4m-5 0v4"/></svg>
+          </div>
+          <span class="cat-name">Bata & Blok</span>
+        </a>
+        <a href="#produk" class="cat-item">
+          <div class="cat-icon">
+            <svg class="ui-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3l4 8l5-5l5 15H2z"/></svg>
+          </div>
+          <span class="cat-name">Pasir & Batu</span>
+        </a>
+        <a href="#produk" class="cat-item">
+          <div class="cat-icon">
+            <svg class="ui-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5.5a6 2.5 0 1 0 12 0a6 2.5 0 1 0-12 0"/><path d="M18 5.5v4.626a1.415 1.415 0 0 1 1.683 2.18l-.097.108L18 14v4c0 1.61-2.54 2.925-5.725 3H12c-3.314 0-6-1.343-6-3v-2l-1.586-1.586A1.414 1.414 0 0 1 6 12.127V5.5m4 7V14m4 2v1"/></svg>
+          </div>
+          <span class="cat-name">Kayu & Panel</span>
+        </a>
+        <a href="#kontak" class="cat-item">
+          <div class="cat-icon">
+            <svg class="ui-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h4L20 8a1.5 1.5 0 0 0-4-4L3 17zM14.5 5.5l4 4"/><path d="M12 8L7 3L3 7l5 5M7 8L5.5 9.5M16 12l5 5l-4 4l-5-5m4 1l-1.5 1.5"/></svg>
+          </div>
+          <span class="cat-name">Alat & Lainnya</span>
+        </a>
+      </div>
     </div>
   </div>
-</section>
 
-<div class="chat-widget">
-  <button class="chat-button" id="chatToggle" aria-label="Buka chat">💬</button>
-
-  <div class="chat-window" id="chatWindow">
-    <div class="chat-header">
-      <h3>Asisten Kami</h3>
-      <button class="chat-close" id="chatClose" aria-label="Tutup chat">×</button>
+  <!-- ═══ PROMO STRIP ═══ -->
+  <div class="promo-strip">
+    <div class="container">
+      <div class="promo-grid">
+        <div class="promo-card reveal">
+          <div class="promo-card-icon">
+            <svg class="ui-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2m10 0H9m10 0h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+          </div>
+          <div class="promo-card-text">
+            <strong>Gratis Ongkir 10km</strong>
+            <span>Berlaku untuk semua produk, min. order Rp 500rb</span>
+          </div>
+        </div>
+        <div class="promo-card reveal">
+          <div class="promo-card-icon">
+            <svg class="ui-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12l2 2l4-4"/></svg>
+          </div>
+          <div class="promo-card-text">
+            <strong>Produk Berstandar SNI</strong>
+            <span>Semua material telah lolos uji kualitas nasional</span>
+          </div>
+        </div>
+        <div class="promo-card reveal">
+          <div class="promo-card-icon">
+            <svg class="ui-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2z"/><path d="M21 16v2a4 4 0 0 1-4 4h-5"/></svg>
+          </div>
+          <div class="promo-card-text">
+            <strong>Konsultasi Gratis</strong>
+            <span>Tim ahli kami siap bantu hitung kebutuhan proyek Anda</span>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="chat-messages" id="chatMessages">
-      <div class="chat-message bot">
-        Halo! Selamat datang di Toko Bangunan Sejahtera. Ada yang bisa saya bantu?
+  <!-- ═══ PRODUK ═══ -->
+  <section id="produk" class="section products-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-title-group">
+          <div class="section-eyebrow">Katalog Produk</div>
+          <h2 class="section-title">Produk Unggulan Kami</h2>
+        </div>
+        <a href="#kontak" class="section-link">
+          Lihat Semua
+          <svg class="ui-icon icon-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg>
+        </a>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="filter-bar reveal">
+        <button class="filter-btn active" data-filter="all">Semua</button>
+        <button class="filter-btn" data-filter="struktur">Struktur</button>
+        <button class="filter-btn" data-filter="material">Material Dasar</button>
+        <button class="filter-btn" data-filter="kayu">Kayu & Panel</button>
+      </div>
+
+      <div class="product-grid stagger">
+        <!-- Featured card -->
+        <div class="product-card featured reveal" data-category="struktur">
+          <div class="product-thumb">
+            <span class="product-tag">Best Seller</span>
+            <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=75&auto=format&fit=crop" alt="Semen Tiga Roda">
+          </div>
+          <div class="product-body">
+            <div class="product-badges">
+              <span class="badge-sni"><svg class="ui-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12l2 2l4-4"/></svg> SNI</span>
+            </div>
+            <h3 class="product-name">Semen Tiga Roda</h3>
+            <p class="product-desc">Portland Composite Cement 50kg, standar SNI. Cocok untuk segala jenis konstruksi — dari fondasi hingga finishing.</p>
+            <div class="product-footer">
+              <div>
+                <span class="product-price-val">Rp 65.000</span>
+                <span class="product-unit"> / sak</span>
+              </div>
+              <button class="product-action" onclick="openModal('semen')">Detail <svg class="ui-icon icon-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="product-card reveal" data-category="struktur">
+          <div class="product-thumb">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=75&auto=format&fit=crop" alt="Besi Beton">
+          </div>
+          <div class="product-body">
+            <div class="product-badges"><span class="badge-sni"><svg class="ui-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12l2 2l4-4"/></svg> SNI</span></div>
+            <h3 class="product-name">Besi Beton 12mm</h3>
+            <p class="product-desc">Panjang 12m, ulir full, merk Krakatau Steel</p>
+            <div class="product-footer">
+              <div>
+                <span class="product-price-val">Rp 185.000</span>
+                <span class="product-unit"> / batang</span>
+              </div>
+              <button class="product-action" onclick="openModal('besi')">Detail <svg class="ui-icon icon-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="product-card reveal" data-category="material">
+          <div class="product-thumb">
+            <img src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=400&q=75&auto=format&fit=crop" alt="Bata Merah">
+          </div>
+          <div class="product-body">
+            <h3 class="product-name">Bata Merah Press</h3>
+            <p class="product-desc">Ukuran 20×10×5cm, kuat tekan 50kg/cm²</p>
+            <div class="product-footer">
+              <div>
+                <span class="product-price-val">Rp 850</span>
+                <span class="product-unit"> / pcs</span>
+              </div>
+              <button class="product-action" onclick="openModal('bata')">Detail <svg class="ui-icon icon-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="product-card reveal" data-category="material">
+          <div class="product-thumb">
+            <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&q=75&auto=format&fit=crop" alt="Pasir Bangka">
+          </div>
+          <div class="product-body">
+            <h3 class="product-name">Pasir Bangka</h3>
+            <p class="product-desc">Pasir halus untuk plesteran dan acian</p>
+            <div class="product-footer">
+              <div>
+                <span class="product-price-val">Rp 350.000</span>
+                <span class="product-unit"> / m³</span>
+              </div>
+              <button class="product-action" onclick="openModal('pasir')">Detail <svg class="ui-icon icon-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="product-card reveal" data-category="material">
+          <div class="product-thumb">
+            <img src="https://images.unsplash.com/photo-1559825481-12a05cc00344?w=400&q=75&auto=format&fit=crop" alt="Batu Split">
+          </div>
+          <div class="product-body">
+            <h3 class="product-name">Batu Split 1/2</h3>
+            <p class="product-desc">Agregat kasar untuk beton cor</p>
+            <div class="product-footer">
+              <div>
+                <span class="product-price-val">Rp 385.000</span>
+                <span class="product-unit"> / m³</span>
+              </div>
+              <button class="product-action" onclick="openModal('batu')">Detail <svg class="ui-icon icon-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="product-card reveal" data-category="kayu">
+          <div class="product-thumb">
+            <img src="https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=400&q=75&auto=format&fit=crop" alt="Triplek">
+          </div>
+          <div class="product-body">
+            <h3 class="product-name">Triplek 9mm</h3>
+            <p class="product-desc">Ukuran 122×244cm, grade A</p>
+            <div class="product-footer">
+              <div>
+                <span class="product-price-val">Rp 180.000</span>
+                <span class="product-unit"> / lembar</span>
+              </div>
+              <button class="product-action" onclick="openModal('triplek')">Detail <svg class="ui-icon icon-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PROYEK / GALERI ═══ -->
+  <section id="proyek" class="section proyek-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-title-group">
+          <div class="section-eyebrow">Portofolio</div>
+          <h2 class="section-title">Proyek yang Kami Dukung</h2>
+        </div>
+        <a href="#kontak" class="section-link">
+          Konsultasi Proyek
+          <svg class="ui-icon icon-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7l7 7l-7 7"/></svg>
+        </a>
+      </div>
+
+      <div class="gallery-grid stagger">
+        <div class="gallery-item reveal">
+          <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&q=75&auto=format&fit=crop" alt="Pembangunan Rumah Tinggal" class="gallery-img">
+          <div class="gallery-overlay"><h3>Pembangunan Rumah Tinggal 2 Lantai</h3></div>
+        </div>
+        <div class="gallery-item reveal">
+          <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=75&auto=format&fit=crop" alt="Renovasi Gedung" class="gallery-img">
+          <div class="gallery-overlay"><h3>Renovasi Gedung Perkantoran</h3></div>
+        </div>
+        <div class="gallery-item reveal">
+          <img src="https://images.unsplash.com/photo-1590725140246-20acddc1ec6d?w=600&q=75&auto=format&fit=crop" alt="Proyek Perumahan" class="gallery-img">
+          <div class="gallery-overlay"><h3>Proyek Perumahan 50 Unit</h3></div>
+        </div>
+        <div class="gallery-item reveal">
+          <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&q=75&auto=format&fit=crop" alt="Pembangunan Ruko" class="gallery-img">
+          <div class="gallery-overlay"><h3>Pembangunan Ruko 3 Lantai</h3></div>
+        </div>
+        <div class="gallery-item reveal">
+          <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=600&q=75&auto=format&fit=crop" alt="Proyek Infrastruktur" class="gallery-img">
+          <div class="gallery-overlay"><h3>Proyek Infrastruktur Jalan</h3></div>
+        </div>
+        <div class="gallery-item reveal">
+          <img src="https://images.unsplash.com/photo-1565117131122-2a4e66b4f4dd?w=600&q=75&auto=format&fit=crop" alt="Renovasi Bangunan" class="gallery-img">
+          <div class="gallery-overlay"><h3>Renovasi Bangunan Ibadah</h3></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ KONTAK ═══ -->
+  <section id="kontak" class="section contact-section">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-left reveal">
+          <div class="contact-eyebrow">Kontak Kami</div>
+          <h2>Siap Membantu Proyek Anda</h2>
+          <p>Ada pertanyaan soal harga, stok, atau pengiriman? Tim kami siap membantu kapan saja di jam operasional.</p>
+          <a href="https://wa.me/6281234567890" class="contact-cta" target="_blank" rel="noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Chat via WhatsApp
+          </a>
+        </div>
+
+        <div class="contact-cards">
+          <div class="contact-card reveal">
+            <div class="contact-card-icon">
+              <svg class="ui-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2a9 9 0 0 1 9 9m-9-5a5 5 0 0 1 5 5m-4.168 5.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233a14 14 0 0 0 6.392 6.384"/></svg>
+            </div>
+            <div class="contact-card-text">
+              <strong>Telepon</strong>
+              <span>0812-3456-7890</span>
+            </div>
+          </div>
+          <div class="contact-card reveal">
+            <div class="contact-card-icon">
+              <svg class="ui-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="contact-card-text">
+              <strong>Alamat</strong>
+              <span>Jl. Raya Industri No. 123, Jakarta</span>
+            </div>
+          </div>
+          <div class="contact-card reveal">
+            <div class="contact-card-icon">
+              <svg class="ui-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="contact-card-text">
+              <strong>Jam Operasional</strong>
+              <span>Senin — Sabtu: 07.00 – 17.00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-main container">
+      <div class="footer-brand">
+        <a href="#" class="logo footer-logo">
+          <span class="logo-icon">S</span>
+          Toko<span class="logo-mark" style="color:var(--yellow)">Sejahtera</span>
+        </a>
+        <p class="footer-tagline">Menyediakan material bangunan berkualitas SNI dengan harga transparan. Pengiriman cepat, pelayanan terpercaya sejak 2005.</p>
+        <a href="https://wa.me/6281234567890" class="footer-wa" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chat WhatsApp
+        </a>
+      </div>
+
+      <div class="footer-links-col">
+        <h4 class="footer-heading">Navigasi</h4>
+        <ul>
+          <li><a href="#produk">Katalog Produk</a></li>
+          <li><a href="#proyek">Portofolio Proyek</a></li>
+          <li><a href="#kontak">Hubungi Kami</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-col">
+        <h4 class="footer-heading">Produk</h4>
+        <ul>
+          <li><a href="#produk">Semen & Besi</a></li>
+          <li><a href="#produk">Bata & Pasir</a></li>
+          <li><a href="#produk">Kayu & Panel</a></li>
+          <li><a href="#produk">Material Lainnya</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-contact-col">
+        <h4 class="footer-heading">Info Toko</h4>
+        <ul class="footer-info-list">
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Jl. Raya Industri No. 123, Jakarta
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.87 2 2 0 0 1 3.59 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.91a16 16 0 0 0 6.08 6.08l1.08-.9a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            0812-3456-7890
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Senin – Sabtu: 07.00 – 17.00
+          </li>
+        </ul>
       </div>
     </div>
 
-    <div class="chat-input-container">
-      <input type="text" class="chat-input" id="chatInput" placeholder="Ketik pesan..." aria-label="Input pesan chat">
-      <button class="chat-send" id="chatSend">Kirim</button>
+    <div class="footer-bottom container">
+      <p>© <span id="footer-year"></span> Toko Bangunan Sejahtera. Semua hak dilindungi.</p>
+      <p class="footer-bottom-right">Material berkualitas · Harga transparan · Pengiriman cepat</p>
+    </div>
+  </footer>
+
+  <!-- ═══ CHAT WIDGET ═══ -->
+  <div class="chat-widget">
+    <button class="chat-fab" id="chatToggle" aria-label="Buka chat">
+      <svg class="ui-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    </button>
+
+    <div class="chat-window" id="chatWindow">
+      <div class="chat-header">
+        <div class="chat-header-left">
+          <div class="chat-avatar">
+            <svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594zM20 2v4m2-2h-4"/><circle cx="4" cy="20" r="2"/></svg>
+          </div>
+          <div>
+            <h3>Asisten Toko</h3>
+            <div class="status">Online</div>
+          </div>
+        </div>
+        <button class="chat-close" id="chatClose" aria-label="Tutup chat">
+          <svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-message bot">
+          Halo! Selamat datang di Toko Bangunan Sejahtera. Ada yang bisa saya bantu?
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Ketik pesan..." aria-label="Input pesan chat">
+        <button class="chat-send" id="chatSend" aria-label="Kirim pesan">
+          <svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904zM6 12h16"/></svg>
+        </button>
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-const chatToggle = document.getElementById('chatToggle');
-const chatWindow = document.getElementById('chatWindow');
-const chatClose = document.getElementById('chatClose');
-const chatMessages = document.getElementById('chatMessages');
-const chatInput = document.getElementById('chatInput');
-const chatSend = document.getElementById('chatSend');
-
-let conversationState = 'greeting';
-
-const responses = {
-  greeting: {
-    keywords: ['halo', 'hai', 'hi', 'pagi', 'siang', 'sore', 'malam'],
-    reply: 'Halo! Senang bisa membantu Anda. Apa yang ingin Anda tanyakan tentang produk kami?',
-    options: ['Harga Semen', 'Stok Besi Beton', 'Cara Pemesanan', 'Info Pengiriman']
-  },
-  semen: {
-    keywords: ['semen', 'cement'],
-    reply: 'Semen Tiga Roda 50kg: Rp 65.000/sak. Minimal pembelian 10 sak. Stok tersedia.',
-    options: ['Pesan Sekarang', 'Lihat Produk Lain', 'Tanya Admin']
-  },
-  besi: {
-    keywords: ['besi', 'beton', 'iron', 'steel'],
-    reply: 'Besi beton 12mm Krakatau Steel: Rp 185.000/batang (12m). Tersedia ukuran 8mm, 10mm, 12mm, dan 16mm.',
-    options: ['Cek Stok Ukuran Lain', 'Pesan Sekarang', 'Tanya Admin']
-  },
-  bata: {
-    keywords: ['bata', 'brick'],
-    reply: 'Bata merah press: Rp 850/pcs. Minimal 1000 pcs. Kualitas premium, kuat tekan 50kg/cm².',
-    options: ['Pesan Sekarang', 'Lihat Produk Lain', 'Tanya Admin']
-  },
-  pasir: {
-    keywords: ['pasir', 'sand'],
-    reply: 'Pasir Bangka: Rp 350.000/m³. Pasir cor: Rp 300.000/m³. Minimal order 1 truk (5m³).',
-    options: ['Info Pengiriman', 'Pesan Sekarang', 'Tanya Admin']
-  },
-  harga: {
-    keywords: ['harga', 'price', 'berapa'],
-    reply: 'Produk mana yang ingin Anda tanyakan harganya?',
-    options: ['Semen', 'Besi Beton', 'Bata Merah', 'Pasir']
-  },
-  pesan: {
-    keywords: ['pesan', 'order', 'beli', 'buy'],
-    reply: 'Untuk pemesanan, silakan hubungi: WhatsApp 0812-3456-7890 atau datang langsung ke toko kami.',
-    options: ['Alamat Toko', 'Jam Operasional', 'Lihat Katalog']
-  },
-  kirim: {
-    keywords: ['kirim', 'delivery', 'antar', 'ongkir'],
-    reply: 'Kami melayani pengiriman gratis radius 10km. Untuk jarak lebih jauh, biaya disesuaikan lokasi.',
-    options: ['Cek Ongkir', 'Pesan Sekarang', 'Tanya Admin']
-  },
-  default: {
-    reply: 'Maaf, saya kurang paham. Bisa diperjelas pertanyaannya? Atau hubungi langsung: 0812-3456-7890',
-    options: ['Lihat Katalog', 'Cara Pemesanan', 'Hubungi Admin']
-  }
-};
-
-function addMessage(text, sender) {
-  const messageDiv = document.createElement('div');
-  messageDiv.className = `chat-message ${sender}`;
-  messageDiv.textContent = text;
-  chatMessages.appendChild(messageDiv);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-function addOptions(options) {
-  const optionsDiv = document.createElement('div');
-  optionsDiv.className = 'chat-options';
-
-  options.forEach(option => {
-    const button = document.createElement('button');
-    button.className = 'chat-option';
-    button.textContent = option;
-    button.onclick = () => handleOptionClick(option);
-    optionsDiv.appendChild(button);
-  });
-
-  chatMessages.appendChild(optionsDiv);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-function handleOptionClick(option) {
-  const optionsToRemove = document.querySelectorAll('.chat-options');
-  optionsToRemove.forEach(el => el.remove());
-
-  addMessage(option, 'user');
-  processMessage(option.toLowerCase());
-}
-
-function processMessage(text) {
-  let response = responses.default;
-
-  for (const [key, value] of Object.entries(responses)) {
-    if (key !== 'default' && value.keywords && value.keywords.some(kw => text.includes(kw))) {
-      response = value;
-      break;
-    }
-  }
-
-  setTimeout(() => {
-    addMessage(response.reply, 'bot');
-    if (response.options) {
-      addOptions(response.options);
-    }
-  }, 500);
-}
-
-function openChat() {
-  chatWindow.classList.add('active');
-  chatToggle.style.display = 'none';
-  chatInput.focus();
-  document.addEventListener('keydown', handleChatEscape);
-}
-
-function closeChat() {
-  chatWindow.classList.remove('active');
-  chatToggle.style.display = 'flex';
-  document.removeEventListener('keydown', handleChatEscape);
-}
-
-function handleChatEscape(e) {
-  if (e.key === 'Escape' && chatWindow.classList.contains('active')) {
-    closeChat();
-  }
-}
-
-chatToggle.addEventListener('click', openChat);
-chatClose.addEventListener('click', closeChat);
-
-chatWindow.addEventListener('keydown', (e) => {
-  if (e.key === 'Tab') {
-    const focusable = chatWindow.querySelectorAll('button, input, [tabindex]:not([tabindex="-1"])');
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-
-    if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault();
-      last.focus();
-    } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault();
-      first.focus();
-    }
-  }
-});
-
-chatSend.addEventListener('click', () => {
-  const text = chatInput.value.trim();
-  if (text) {
-    addMessage(text, 'user');
-    processMessage(text.toLowerCase());
-    chatInput.value = '';
-  }
-});
-
-chatInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    chatSend.click();
-  }
-});
-
-setTimeout(() => {
-  addOptions(['Lihat Harga', 'Cara Pesan', 'Info Pengiriman', 'Hubungi Kami']);
-}, 1000);
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
